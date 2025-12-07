@@ -1,0 +1,19 @@
+
+
+.comment-item {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+
+.light-theme .comment-item {
+  background-color: #f1f1f1;
+  color: #000;
+}
+
+
+.dark-theme .comment-item {
+  background-color: #2b2b2b;
+  color: #fff;
+}

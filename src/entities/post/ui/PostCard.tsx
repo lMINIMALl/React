@@ -1,15 +1,36 @@
+import { useEffect, useState } from "react";
+import { CommentList } from "../../../widgets/CommentList/ui/CommentList";
+import "./PostCard.css";
+
 type Props = {
+  id: number;
   title: string;
-  text: string;
+  body: string;
+  onClick?: () => void; 
 };
 
-function PostCard({ title, text }: Props) {
+export default function PostCard({ id, title, body, onClick }: Props) {
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+      .then((res) => res.json())
+      .then((data) => {
+        setComments(
+          data.map((c: any) => ({
+            id: c.id,
+            text: c.body,
+          }))
+        );
+      });
+  }, [id]);
+
   return (
-    <div>
+    <div className="post-card" onClick={onClick}>
       <h3>{title}</h3>
-      <p>{text}</p>
+      <p>{body}</p>
+
+      <CommentList comments={comments} />
     </div>
   );
 }
-
-export default PostCard;

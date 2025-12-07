@@ -1,4 +1,5 @@
 import { useTheme } from '../../../shared/lib/theme/useTheme';
+import "./ThemeSwitcher.css"; 
 
 export const ThemeSwitcher = () => { 
   const { theme, toggleTheme } = useTheme();
@@ -6,8 +7,8 @@ export const ThemeSwitcher = () => {
   return (
     <div>
       <p>Текущая тема: {theme}</p>
-      <button onClick={toggleTheme}>
-        Переключить тему на {theme === 'светлая' ? 'темную' : 'сетлую'}
+      <button className="button" onClick={toggleTheme}>
+        Переключить тему на {theme === 'светлая' ? 'темную' : 'светлую'}
       </button>
     </div>
   );

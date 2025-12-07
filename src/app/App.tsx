@@ -1,50 +1,68 @@
+import { useEffect, useState } from "react";
 import MainLayout from "../shared/layouts/MainLayout";
-import PostList from "../widgets/PostList/PostList";
-
 import { ThemeProvider } from "../shared/lib/theme/ThemeContext";
 import { useTheme } from "../shared/lib/theme/useTheme";
+import { PostListWithLoading } from "../widgets/PostList/PostListWithLoading";
+import { PostLengthFilter } from "../features/PostLengthFilter/ui/PostLengthFilter";
 
 import "./App.css";
 
 type Post = {
   id: number;
   title: string;
-  text: string;
+  body: string;
 };
 
-type MainContentProps = {
-  posts: Post[];
-};
+const MainContent = ({ posts, isLoading }: { posts: Post[], isLoading: boolean }) => {
+  const [ascending, setAscending] = useState(true);
 
-const MainContent = ({ posts }: MainContentProps) => {
-  const { theme } = useTheme();
+  const sortedPosts = [...posts].sort((a, b) =>
+    ascending ? a.title.length - b.title.length : b.title.length - a.title.length
+  );
 
   return (
-    <main className={theme === "светлая" ? "light-theme" : "dark-theme"}>
+    <main>
       <h1>Список постов</h1>
-      <PostList posts={posts} />
+
+      <PostLengthFilter onChangeOrder={setAscending} />
+
+      <PostListWithLoading isLoading={isLoading} posts={sortedPosts} />
     </main>
   );
 };
 
-export const App = () => {
-const posts: Post[] = [
-  { id: 1, title: "Пост 1", text: "Текст поста 1" },
-  { id: 2, title: "Пост 2", text: "Текст поста 2" },
-  { id: 3, title: "Пост 3", text: "Текст поста 3" },
-  { id: 4, title: "Пост 4", text: "Текст поста 4" },
-  { id: 5, title: "Пост 5", text: "Текст поста 5" },
-  { id: 6, title: "Пост 6", text: "Текст поста 6" },
-  { id: 7, title: "Пост 7", text: "Текст поста 7" },
-  { id: 8, title: "Пост 8", text: "Текст поста 8" },
-];
+
+const AppContent = () => {
+  const { theme } = useTheme();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    document.body.className =
+      theme === "светлая" ? "light-theme" : "dark-theme";
+  }, [theme]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts?_limit=10")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
-    <ThemeProvider>
-      <MainLayout>
+    <MainLayout>
+      <MainContent posts={posts} isLoading={isLoading} />
+    </MainLayout>
+  );
+};
 
-        <MainContent posts={posts} />
-      </MainLayout>
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
     </ThemeProvider>
   );
 };
