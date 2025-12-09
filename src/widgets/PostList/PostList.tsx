@@ -1,5 +1,7 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PostCard from "../../entities/post/ui/PostCard";
+import { PostLengthFilter } from "../../features/PostLengthFilter/ui/PostLengthFilter";
+import { filterByLength } from "../../features/PostLengthFilter/lib/filterByLength";
 
 export type Post = {
   id: number;
@@ -7,46 +9,41 @@ export type Post = {
   body: string;
 };
 
-type Props = {
-  posts: Post[];
-};
+export default function PostList() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-function PostList({ posts }: Props) {
-  const renderedPosts = useMemo(() => {
-    return posts.map((post) => (
-      <PostCardMemo
-        key={post.id}
-        id={post.id}
-        title={post.title}
-        body={post.body}
-      />
-    ));
-  }, [posts]);
+  const [maxWords, setMaxWords] = useState(9999);
 
-  return <div className="post-list">{renderedPosts}</div>;
-}
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts?_limit=10")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setIsLoading(false);
+      });
+  }, []);
 
-type PostCardProps = {
-  id: number;
-  title: string;
-  body: string;
-};
+  const filteredPosts = useMemo(() => {
+    return filterByLength(posts, maxWords);
+  }, [posts, maxWords]);
 
-const PostCardMemo = ({ id, title, body }: PostCardProps) => {
-  const handleClick = useCallback(() => {
-    console.log("Clicked post id:", id);
-  }, [id]);
+  if (isLoading) return <div>Loading...</div>;
 
   return (
-    <PostCard
-      id={id}
-      title={title}
-      body={body}
-      onClick={handleClick}
-    />
+    <div>
+      <PostLengthFilter onChange={setMaxWords} />
+
+      <ul className="post-list">
+        {filteredPosts.map((post) => (
+          <PostCard
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            body={post.body}
+          />
+        ))}
+      </ul>
+    </div>
   );
-};
-
-const PostCardMemoized = Object.assign(React.memo(PostCardMemo), { displayName: "PostCardMemo" });
-
-export default PostList;
+}

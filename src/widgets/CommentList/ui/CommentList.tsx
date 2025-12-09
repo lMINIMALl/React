@@ -23,15 +23,13 @@ export const CommentList = ({ comments }: Props) => {
         {isOpen ? "Скрыть комментарии" : "Показать комментарии"} ({comments.length})
       </button>
 
-      {isOpen && (
-        <div className="comments-container">
-          {comments.map((c) => (
-            <div key={c.id} className="comment-item">
-              {c.text}
-            </div>
-          ))}
-        </div>
-      )}
+      <ul className={`comments-container ${isOpen ? "open" : ""}`}>
+        {comments.map((c) => (
+          <li key={c.id} className="comment-item">
+            {c.text}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

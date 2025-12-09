@@ -1,25 +1,30 @@
 import { useState, useCallback } from "react";
 
 type Props = {
-  onChangeOrder: (ascending: boolean) => void;
+  onChange: (minLength: number) => void;
 };
 
-export const PostLengthFilter = ({ onChangeOrder }: Props) => {
-  const [ascending, setAscending] = useState(true);
+export const PostLengthFilter = ({ onChange }: Props) => {
+  const [minLength, setMinLength] = useState(0);
 
-  const toggleOrder = useCallback(() => {
-    setAscending((prev) => {
-      const newOrder = !prev;
-      onChangeOrder(newOrder);
-      return newOrder;
-    });
-  }, [onChangeOrder]);
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    setMinLength(value);
+    onChange(value); 
+  }, [onChange]);
 
   return (
-    <div>
-      <button onClick={toggleOrder} className="button">
-        {ascending ? "⮝" : "⮟"}
-      </button>
+    <div style={{ marginBottom: 16 }}>
+      <label>
+        Фильтр по количеству слов заголовка:
+        <input
+          type="number"
+          min={0}
+          value={minLength}
+          onChange={handleChange}
+          style={{ marginLeft: 8, width: 60 }}
+        />
+      </label>
     </div>
   );
 };

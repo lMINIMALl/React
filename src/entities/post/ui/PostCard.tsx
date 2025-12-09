@@ -6,7 +6,7 @@ type Props = {
   id: number;
   title: string;
   body: string;
-  onClick?: () => void; 
+  onClick?: () => void;
 };
 
 export default function PostCard({ id, title, body, onClick }: Props) {
@@ -26,11 +26,11 @@ export default function PostCard({ id, title, body, onClick }: Props) {
   }, [id]);
 
   return (
-    <div className="post-card" onClick={onClick}>
+    <li className="post-card" onClick={onClick}>
       <h3>{title}</h3>
       <p>{body}</p>
 
       <CommentList comments={comments} />
-    </div>
+    </li>
   );
 }
