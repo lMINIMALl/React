@@ -1,0 +1,31 @@
+.comments-container {
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 0;
+  margin: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.comments-container.open {
+  max-height: 500px; 
+  opacity: 1;
+}
+
+.comment-item {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  list-style: none;
+}
+
+
+.light-theme .comment-item {
+  background-color: #f1f1f1;
+  color: #000;
+}
+
+.dark-theme .comment-item {
+  background-color: #2b2b2b;
+  color: #fff;
+}
