@@ -15,13 +15,13 @@ export default function PostList() {
     [posts, maxWords]
   );
 
-  const postsWithUsers = useMemo(() => {
-    if (users.length === 0) return [];
-    return filteredPosts.map(post => {
-      const randomUser = users[Math.floor(Math.random() * users.length)];
-      return { ...post, user: randomUser };
-    });
-  }, [filteredPosts, users]);
+const postsWithUsers = useMemo(() => {
+  if (users.length === 0) return [];
+  return filteredPosts.map(post => {
+    const postUser = users.find(u => u.id === post.userId);
+    return { ...post, user: postUser };
+  });
+}, [filteredPosts, users]);
 
   if (postsLoading || usersLoading) return <div>Loading...</div>;
   if (postsError) return <div>Error posts: {postsError}</div>;

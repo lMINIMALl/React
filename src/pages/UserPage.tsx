@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useUsers } from "../features/PostList/model/hooks/useUsers";
+import { useParams, useNavigate } from "react-router-dom";
+import { useGetUserByIdQuery } from "../shared/api/api";
 import { UserTabs } from "../widgets/UserTabs/UserTabs";
 import "./global.css";
 
@@ -9,23 +8,19 @@ export const UserPage = () => {
   const userId = Number(id);
   const navigate = useNavigate();
 
-  const { users, isLoading, error } = useUsers();
-  const user = users.find((u) => u.id === userId);
-
-  const handleBack = () => navigate(-1);
+  const { data: user, isLoading, error } = useGetUserByIdQuery(userId);
 
   if (isLoading) return <div>Loading user...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div>Error: {(error as any).status}</div>;
   if (!user) return <div>User not found</div>;
 
   return (
     <div className="user-page">
-      <button className="back-btn" onClick={handleBack}>
+      <button className="back-btn" onClick={() => navigate(-1)}>
         Назад
       </button>
-
       <div className="user-header">
-        <img src={user.avatar} alt={user.name} />
+        <img src={`https://i.pravatar.cc/150?img=${user.id}`} alt={user.name} />
         <h1>{user.name}</h1>
       </div>
 

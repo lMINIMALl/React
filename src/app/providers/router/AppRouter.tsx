@@ -8,6 +8,9 @@ import UserPostsPage from "../../../pages/UserPostsPage";
 import { UserPage } from "../../../pages/UserPage";
 import MainLayout from "../../../shared/layouts/MainLayout";
 
+
+import { UsersList } from "../../../entities/user/ui/UsersList";
+
 export const AppRouter = () => {
   return (
     <Routes>
@@ -27,6 +30,15 @@ export const AppRouter = () => {
         element={
           <MainLayout>
             <PostDetailPage />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/users"
+        element={
+          <MainLayout>
+            <UsersList />
           </MainLayout>
         }
       />

@@ -1,49 +1,42 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { usePosts } from "../features/PostList/model/hooks/usePosts";
-import type { Post } from "../features/PostList/model/hooks/usePosts";
-import { useUsers } from "../features/PostList/model/hooks/useUsers";
-import type { User } from "../features/PostList/model/hooks/useUsers";
+import { useGetUserPostsQuery } from "../entities/post/api/postsApi";
+import { useGetUsersQuery } from "../shared/api/api";
 import PostCard from "../entities/post/ui/PostCard";
 
-const UserPostsPage = () => {
+export default function UserPostsPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
   const navigate = useNavigate();
 
-  const { posts, isLoading: postsLoading, error: postsError } = usePosts();
-  const { users, isLoading: usersLoading, error: usersError } = useUsers();
+  const { data: users, isLoading: usersLoading } = useGetUsersQuery();
+  const { data: posts, isLoading: postsLoading } = useGetUserPostsQuery(userId);
 
-  const user = users.find((u: User) => u.id === userId);
 
-  if (postsLoading || usersLoading) return <div>Loading...</div>;
-  if (postsError) return <div>Error loading posts: {postsError}</div>;
-  if (usersError) return <div>Error loading users: {usersError}</div>;
-  if (!user) return <div>User not found</div>;
+  const user = users?.find(u => u.id === userId);
+  const userWithAvatar = user
+    ? { ...user, avatar: `https://i.pravatar.cc/150?img=${user.id}` }
+    : undefined;
 
-  const userPosts = posts.filter((post: Post) => post.userId === userId);
-
-  const handleBack = () => navigate(-1); 
+  if (usersLoading || postsLoading) return <div>Загрузка...</div>;
+  if (!userWithAvatar) return <div>Пользователь не найден</div>;
 
   return (
     <div>
-      <button onClick={handleBack}>
+      <button className="back-btn" onClick={() => navigate(-1)}>
         Назад
       </button>
-
-      <h2>Посты пользователя {user.name}</h2>
+      <h2>Посты пользователя {userWithAvatar.name}</h2>
       <ul className="post-list">
-        {userPosts.map((post: Post) => (
+        {posts?.map(post => (
           <PostCard
             key={post.id}
             id={post.id}
             title={post.title}
             body={post.body}
-            user={user}
+            user={userWithAvatar}
           />
         ))}
       </ul>
     </div>
   );
-};
-
-export default UserPostsPage;
+}
