@@ -1,8 +1,8 @@
 {
   "name": "averkovamariya",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
-   "description": "Домашнее задание 3 Реализация отображения модального окна с использованием compound components, фильтрация постов по длине заголовка, свертывание комментариев и оптимизации через HOC и хуки",
+  "description": "Домашнее задание 4 добавить маршруты для страниц с постами, комментариями, альбомами, фото и задачами пользователей. Реализовать навигацию и кастомный хук для получения постов.",
   "license": "ISC",
   "author": "Мария Аверкова",
   "type": "module",
@@ -15,13 +15,15 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

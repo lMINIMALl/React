@@ -1,37 +1,16 @@
-import React from "react";
-import MainLayout from "../shared/layouts/MainLayout";
 import { ThemeProvider } from "../shared/lib/theme/ThemeContext";
-import { useTheme } from "../shared/lib/theme/useTheme";
-import PostList from "../widgets/PostList/PostList";
+import { AppRouter } from "./providers/router/AppRouter";
+import { BrowserRouter } from "react-router-dom";
 
 import "./App.css";
 
-const MainContent = () => {
-  const { theme } = useTheme();
-
-  React.useEffect(() => {
-    document.body.className =
-      theme === "светлая" ? "light-theme" : "dark-theme";
-  }, [theme]);
-
+export const App = () => {
   return (
-    <main>
-      <h1>Список постов</h1>
-      <PostList />
-    </main>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
-
-const AppContent = () => (
-  <MainLayout>
-    <MainContent />
-  </MainLayout>
-);
-
-const App = () => (
-  <ThemeProvider>
-    <AppContent />
-  </ThemeProvider>
-);
-
 export default App;
