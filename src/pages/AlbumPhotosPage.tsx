@@ -17,6 +17,11 @@ export const AlbumPhotosPage = () => {
   const shuffle = <T,>(array: T[]) =>
     [...array].sort(() => Math.random() - 0.5);
 
+  const getRandomColor = () =>
+    Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0"); 
+
   useEffect(() => {
     if (!albumId) return;
 
@@ -24,13 +29,21 @@ export const AlbumPhotosPage = () => {
       .then((res) => res.json())
       .then((data: Album) => setAlbum(data));
 
-    fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
-      .then((res) => res.json())
-      .then((data: Photo[]) => {
-        const randomPhotos = shuffle(data);
-        setPhotos(randomPhotos);
-        setIsLoading(false);
+  fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos`)
+    .then((res) => res.json())
+    .then((data: Photo[]) => {
+      const randomPhotos = shuffle(data).map((photo, index) => {
+        const color = getRandomColor();
+        return {
+          ...photo,
+          id: albumId * 1000 + index,
+          thumbnailUrl: `https://placehold.co/150/${color}/000000/png?text=${encodeURIComponent(photo.title)}`,
+          url: `https://placehold.co/600/${color}/000000/png?text=${encodeURIComponent(photo.title)}`
+        };
       });
+      setPhotos(randomPhotos);
+      setIsLoading(false);
+    });
   }, [albumId]);
 
   if (!albumId) return <div>Invalid album ID</div>;
@@ -40,20 +53,18 @@ export const AlbumPhotosPage = () => {
 
   return (
     <div>
-      <button onClick={handleBack}>
-        Назад
-      </button>
+      <button onClick={handleBack}>Назад</button>
 
       <h2>Фотографии альбома: {album?.title ?? "Без названия"}</h2>
 
-        <div className="photos-grid">
-          {photos.map((photo) => (
-            <div key={photo.id} className="photo-card">
-              <img src={photo.thumbnailUrl} alt={photo.title} />
-              <p>{photo.title}</p>
-            </div>
-          ))}
-        </div>
+      <div className="photos-grid">
+        {photos.map((photo) => (
+          <div key={photo.id} className="photo-card">
+            <img src={photo.thumbnailUrl} alt={photo.title} />
+            <p>{photo.title}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

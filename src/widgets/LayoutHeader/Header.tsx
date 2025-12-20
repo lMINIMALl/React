@@ -10,7 +10,16 @@ function Header() {
     <header>
       <Button onClick={() => setIsModalOpen(true)}>О проекте</Button>
       <ThemeSwitcher />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal.Header>Информация о проекте</Modal.Header>
+        <Modal.Body>
+          Модальное окно
+        </Modal.Body>
+        <Modal.Footer>
+          Footer
+        </Modal.Footer>
+      </Modal>
     </header>
   );
 }
