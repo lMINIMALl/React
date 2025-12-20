@@ -1,11 +1,11 @@
 import React from "react";
 
+export type WithLoadingProps<P> = P & { isLoading: boolean };
+
 export function withLoading<P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) {
-  type PropsWithLoading = P & { isLoading: boolean };
-
-  const ComponentWithLoading: React.FC<PropsWithLoading> = (props) => {
+  const ComponentWithLoading: React.FC<WithLoadingProps<P>> = (props) => {
     const { isLoading, ...rest } = props;
 
     if (isLoading) {

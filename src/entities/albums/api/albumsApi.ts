@@ -14,6 +14,17 @@ export interface Photo {
   thumbnailUrl: string;
 }
 
+const getRandomColor = (): string => {
+  const letters = "0123456789ABCDEF";
+  let color = "";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+const encodeText = (text: string) => encodeURIComponent(text);
+
 export const albumsApi = createApi({
   reducerPath: "albumsApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://jsonplaceholder.typicode.com" }),
@@ -24,6 +35,17 @@ export const albumsApi = createApi({
 
     getAlbumPhotos: builder.query<Photo[], number>({
       query: (albumId) => `/albums/${albumId}/photos`,
+      transformResponse: (response: Photo[]) =>
+        response.map(photo => {
+          const color = getRandomColor();
+          const text = encodeText(photo.title); 
+          const url = `https://placehold.co/150/${color}/000000/png?text=${text}`;
+          return {
+            ...photo,
+            url,
+            thumbnailUrl: url,
+          };
+        }),
     }),
 
     getAlbumsByUser: builder.query<Album[], number>({
