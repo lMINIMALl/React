@@ -1,10 +1,5 @@
 import { createSlice, createEntityAdapter, type PayloadAction, type EntityState, type EntityAdapter } from "@reduxjs/toolkit";
-
-export type User = {
-  id: number;
-  name: string;
-  avatar: string;
-};
+import type { User } from "../types"; 
 
 const usersAdapter: EntityAdapter<User, number> = createEntityAdapter<User, number>({
   selectId: (user) => user.id,

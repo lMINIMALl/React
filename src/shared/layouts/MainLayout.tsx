@@ -3,11 +3,9 @@ import Header from "../../widgets/LayoutHeader/Header";
 import Footer from "../../widgets/LayoutFooter/Footer";
 import { useTheme } from "../lib/theme/useTheme";
 
-type Props = {
-  children: React.ReactNode;
-};
+type Props = React.PropsWithChildren<{}>; 
 
-function MainLayout({ children }: Props) {
+const MainLayout: React.FC<Props> = ({ children }) => {
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -21,6 +19,6 @@ function MainLayout({ children }: Props) {
       <Footer />
     </>
   );
-}
+};
 
 export default MainLayout;

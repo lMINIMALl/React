@@ -1,29 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEventHandler } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CommentList } from "../../../widgets/CommentList/ui/CommentList";
-import type { User } from "../../../features/PostList/model/hooks/useUsers";
+import type { User } from "../../../entities/user/model/types";
 
-type Props = {
+interface Comment {
+  id: number;
+  text: string;
+}
+
+interface PostCardProps {
   id: number;
   title: string;
   body: string;
-  user?: User; 
-  showBackButton?: boolean; 
-  showComments?: boolean; 
-};
-
-export default function PostCard({ id, title, body, user, showBackButton, showComments }: Props) {
-  const [comments, setComments] = useState<{ id: number; text: string }[]>([]);
+  user?: User;
+  showBackButton?: boolean;
+  showComments?: boolean;
+}
+export default function PostCard({
+  id,
+  title,
+  body,
+  user,
+  showBackButton = false,
+  showComments = false,
+}: PostCardProps) {
+  const [comments, setComments] = useState<Comment[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!showComments) return;
 
     fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data: { id: number; body: string }[]) => {
         setComments(
-          data.map((c: any) => ({
+          data.map((c) => ({
             id: c.id,
             text: c.body,
           }))
@@ -31,13 +42,12 @@ export default function PostCard({ id, title, body, user, showBackButton, showCo
       });
   }, [id, showComments]);
 
-  const handleBack = () => {
+  const handleBack: MouseEventHandler<HTMLButtonElement> = () => {
     navigate("/posts");
   };
 
   return (
     <li className="post-card">
-
       <div className="post-card-btn-wrapper">
         {showBackButton ? (
           <button className="post-detail-btn" onClick={handleBack}>
@@ -50,7 +60,6 @@ export default function PostCard({ id, title, body, user, showBackButton, showCo
         )}
       </div>
 
-
       {user ? (
         <div className="post-author">
           <img src={user.avatar} alt={user.name} className="post-avatar" />
@@ -61,7 +70,6 @@ export default function PostCard({ id, title, body, user, showBackButton, showCo
       ) : (
         <div className="post-author">Loading author...</div>
       )}
-
 
       <h3>{title}</h3>
       <p>{body}</p>

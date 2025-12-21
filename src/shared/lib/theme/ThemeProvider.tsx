@@ -1,13 +1,16 @@
-import type { FC, ReactNode } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { ThemeContext } from "./ThemeContext";
 import type { Theme } from "./ThemeContext";
 
-export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>("светлая");
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "светлая" ? "темная" : "светлая"));
+    setTheme(prev => (prev === "светлая" ? "темная" : "светлая"));
   };
 
   useEffect(() => {

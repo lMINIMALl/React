@@ -1,18 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export interface Album {
-  userId: number;
-  id: number;
-  title: string;
-}
-
-export interface Photo {
-  albumId: number;
-  id: number;
-  title: string;
-  url: string;
-  thumbnailUrl: string;
-}
+import type { Album, Photo } from "../model/types"; 
 
 const getRandomColor = (): string => {
   const letters = "0123456789ABCDEF";

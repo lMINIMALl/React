@@ -1,15 +1,16 @@
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./UserTabs.css";
+import type { UserTab } from "../../entities/user/model/types"; 
 
 type Props = {
   userId: number;
 };
 
-export const UserTabs = ({ userId }: Props) => {
+export const UserTabs: React.FC<Props> = ({ userId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const tabs = [
+  const tabs: UserTab[] = [
     { label: "Посты", path: `/users/${userId}/posts` },
     { label: "Альбомы", path: `/users/${userId}/albums` },
     { label: "Задачи", path: `/users/${userId}/todos` },

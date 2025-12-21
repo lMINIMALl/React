@@ -2,8 +2,6 @@ import { ThemeProvider } from "../shared/lib/theme/ThemeContext";
 import { AppRouter } from "./providers/router/AppRouter";
 import { BrowserRouter } from "react-router-dom";
 
-import "./App.css";
-
 export const App = () => {
   return (
     <ThemeProvider>

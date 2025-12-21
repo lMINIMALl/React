@@ -1,25 +1,24 @@
-import { useState, useCallback } from "react";
-import "./CommentList.css";
+import { useState, useCallback, type FC } from "react";
 
-type Comment = {
+export interface Comment {
   id: number;
   text: string;
-};
+}
 
-type Props = {
+interface CommentListProps {
   comments: Comment[];
-};
+}
 
-export const CommentList = ({ comments }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const CommentList: FC<CommentListProps> = ({ comments }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const toggle = useCallback(() => {
+  const toggle = useCallback((): void => {
     setIsOpen((prev) => !prev);
   }, []);
 
   return (
     <div className="comment-list">
-      <button onClick={toggle} className="button">
+      <button onClick={toggle} className="button" type="button">
         {isOpen ? "Скрыть комментарии" : "Показать комментарии"} ({comments.length})
       </button>
 

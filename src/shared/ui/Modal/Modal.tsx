@@ -1,8 +1,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 import { Button } from "../Button/Button";
-import type { ReactNode } from "react";
-import "./Modal.css";
+import type { ReactNode, PropsWithChildren, FC } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,12 +9,15 @@ interface ModalProps {
   children: ReactNode;
 }
 
-interface FooterProps {
+interface FooterProps extends PropsWithChildren<{}> {
   onClose?: () => void;
-  children: ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+export const Modal: FC<ModalProps> & {
+  Header: FC<PropsWithChildren<{}>>;
+  Body: FC<PropsWithChildren<{}>>;
+  Footer: FC<FooterProps>;
+} = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   const enhancedChildren = React.Children.map(children, (child) => {
@@ -36,15 +38,16 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   );
 };
 
-const Header = ({ children }: { children: ReactNode }) => (
+
+const Header: FC<PropsWithChildren<{}>> = ({ children }) => (
   <div className="modal-header">{children}</div>
 );
 
-const Body = ({ children }: { children: ReactNode }) => (
+const Body: FC<PropsWithChildren<{}>> = ({ children }) => (
   <div className="modal-body">{children}</div>
 );
 
-const Footer = ({ onClose, children }: FooterProps) => (
+const Footer: FC<FooterProps> = ({ onClose, children }) => (
   <div className="modal-footer">
     {children}
     {onClose && (

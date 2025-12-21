@@ -3,8 +3,8 @@ import { ThemeSwitcher } from "../../features/ThemeSwitcher/ui/ThemeSwitcher";
 import { Modal } from "../../shared/ui/Modal/Modal";
 import { Button } from "../../shared/ui/Button/Button";
 
-function Header() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const Header: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <header>
@@ -22,6 +22,6 @@ function Header() {
       </Modal>
     </header>
   );
-}
+};
 
 export default Header;

@@ -1,5 +1,4 @@
 import { useTheme } from '../../../shared/lib/theme/useTheme';
-import "./ThemeSwitcher.css"; 
 
 export const ThemeSwitcher = () => { 
   const { theme, toggleTheme } = useTheme();

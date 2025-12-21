@@ -1,4 +1,4 @@
-import type { Post } from "../../../widgets/PostList/PostList";
+import type { Post } from "../../../entities/post/model/types"; 
 
 const countWords = (title: string) => {
   return title.trim().split(/\s+/).length;
